@@ -163,7 +163,7 @@ router.route('/movies')
             })
         }
     )
-    .delete(authController.isAuthenticated, function(req, res) {
+    .delete(function(req, res) {
         // should be auth
         // .delete(authController.isAuthenticated, function(req, res) {
         console.log(req.body);
