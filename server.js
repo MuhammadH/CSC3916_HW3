@@ -93,11 +93,14 @@ router.route('/movies')
         new_movie.title = req.body.title;
         new_movie.year = req.body.year;
         new_movie.genre = req.body.genre;
+        new_movie.cast = req.body.cast;
 
+        /*
         let cast_length = req.body.cast.length;
         for (let i = 0; i < cast_length; i++) {
             new_movie.cast.push(JSON.parse(JSON.stringify(req.body.cast[i])));
         }
+         */
 
         user.save(function(err){
             if (err) {
