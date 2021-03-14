@@ -100,13 +100,6 @@ router.route('/movies')
         new_movie.genre = req.body.genre;
         new_movie.cast = req.body.cast;
 
-        /*
-        let cast_length = req.body.cast.length;
-        for (let i = 0; i < cast_length; i++) {
-            new_movie.cast.push(JSON.parse(JSON.stringify(req.body.cast[i])));
-        }
-         */
-
         new_movie.save(function(err){
             if (err) {
                 if (err.code == 11000)
@@ -126,41 +119,60 @@ router.route('/movies')
                 if (err) res.send(err);
                 res.json({status:200, success: true, size: movies.length, movies: movies});
             });
-            /*
-        res = res.status(200);
-        if (req.get('Content-Type')) {
-            res = res.type(req.get('Content-Type'));
-        }
-        var req_obj = getJSONObjectForMovieRequirement(req);
-        res.json({success: true, msg: 'get movies', headers: req_obj.headers, query: req.query, host: req_obj.key});
-
-             */
     }
     )
+    .put(function(req, res) {
+            // should be jauth
+            // .put(authJwtController.isAuthenticated, function(req, res) {
+            console.log(req.body);
+
+            let id = req.body.title;
+            Movie.findById(id, function(err, movie) {
+                if (err) {
+                    if (err.kind === "ObjectId") {
+                        res.status(404).json({
+                            success: false,
+                            message: `No movie with id: ${id} in the database!`
+                        }).send();
+                    } else {
+                        res.send(err);
+                    }
+                } else if (movie) {
+                    if (req.body.title) {
+                        movie.title = req.body.title;
+                    }
+                    if (req.body.year) {
+                        movie.year = req.body.year;
+                    }
+                    if (req.body.genre) {
+                        movie.genre = req.body.genre;
+                    }
+                    if (req.body.cast) {
+                        movie.cast = req.body.cast;
+                    }
+                    movie.save(function (err) {
+                        if (err) res.send(err);
+
+                        res.status(200).json({
+                            success: true,
+                            message: 'Movie updated!'
+                        });
+                    });
+                }
+            })
+        }
+    )
 /*
-.put(authJwtController.isAuthenticated, function(req, res) {
-        // should be jauth
-        // .put(authJwtController.isAuthenticated, function(req, res) {
-        console.log(req.body);
-        // set status code
-        res = res.status(200);
-        if (req.get('Content-Type')) {
-            res = res.type(req.get('Content-Type'));
-        }
-        var req_obj = getJSONObjectForMovieRequirement(req);
-        res.json({success: true, msg: 'put movies', headers: req_obj.headers, query: req.query, host: req_obj.key});
-    }
-)
 .delete(authController.isAuthenticated, function(req, res) {
-        console.log(req.body);
-        // set status code
-        res = res.status(200);
-        if (req.get('Content-Type')) {
-            res = res.type(req.get('Content-Type'));
-        }
-        var req_obj = getJSONObjectForMovieRequirement(req);
-        res.json({success: true, msg: 'delete movies', headers: req_obj.headers, query: req.query, host: req_obj.key});
+    console.log(req.body);
+    // set status code
+    res = res.status(200);
+    if (req.get('Content-Type')) {
+        res = res.type(req.get('Content-Type'));
     }
+    var req_obj = getJSONObjectForMovieRequirement(req);
+    res.json({success: true, msg: 'delete movies', headers: req_obj.headers, query: req.query, host: req_obj.key});
+}
 )
 */
 ;

@@ -13,7 +13,7 @@ try {
 mongoose.set('useCreateIndex', true);
 
 //user schema
-var MovieSchemaC = new Schema({
+var MovieSchema = new Schema({
    title: {type: String, required: true, index: { unique: true }},
    year: {type: String, required: true},
    genre: {type: String, required: true},
@@ -23,7 +23,7 @@ var MovieSchemaC = new Schema({
    }]
 });
 
-MovieSchemaC.pre('save', function(next) {
+MovieSchema.pre('save', function(next) {
    var movie = this;
 
    if (movie.cast.length < 3) {
@@ -36,4 +36,4 @@ MovieSchemaC.pre('save', function(next) {
 });
 
 //return the model to server
-module.exports = mongoose.model('Movie', MovieSchemaC);
+module.exports = mongoose.model('Movie', MovieSchema);
