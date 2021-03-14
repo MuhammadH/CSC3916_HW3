@@ -127,7 +127,7 @@ router.route('/movies')
             console.log(req.body);
 
             let id = req.body.id;
-            Movie.findOne({ title: id }).select('title year genre cast').exec(function(err, user) {
+            Movie.findOne({ title: id }).select('title year genre cast').exec(function(err, movie) {
             // Movie.findById(id, function(err, movie) {
                 if (err) {
                     if (err.kind === "ObjectId") {
