@@ -124,12 +124,7 @@ router.route('/movies')
             // set status code
             Movie.find(function (err, movies) {
                 if (err) res.send(err);
-
-                res.status(200).json({
-                    success: true,
-                    size: movies.length,
-                    movies: movies
-                })
+                res.json({status:200, success: true, size: movies.length, movies: movies});
             });
             /*
         res = res.status(200);
