@@ -126,7 +126,7 @@ router.route('/movies')
             // .put(authJwtController.isAuthenticated, function(req, res) {
             console.log(req.body);
 
-            let id = req.body.title;
+            let id = req.body.id;
             Movie.findById(id, function(err, movie) {
                 if (err) {
                     if (err.kind === "ObjectId") {
