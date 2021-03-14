@@ -127,7 +127,7 @@ router.route('/movies')
             console.log(req.body);
 
             let id = req.body.id;
-            Movie.findById(id, function(err, movie) {
+            Movie.findOne(id, function(err, movie) {
                 if (err) {
                     if (err.kind === "ObjectId") {
                         res.status(404).json({
