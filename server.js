@@ -88,6 +88,11 @@ router.post('/signin', function (req, res) {
 
 router.route('/movies')
     .post(function(req, res) {
+        if (!req.body.title || !req.body.year || !req.body.genre || !req.body.cast) {
+            res.json({success: false, msg: 'Please include all data.'});
+            return;
+        }
+
         var new_movie = new Movie();
 
         new_movie.title = req.body.title;
