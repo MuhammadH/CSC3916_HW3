@@ -163,19 +163,44 @@ router.route('/movies')
             })
         }
     )
-/*
-.delete(authController.isAuthenticated, function(req, res) {
-    console.log(req.body);
-    // set status code
-    res = res.status(200);
-    if (req.get('Content-Type')) {
-        res = res.type(req.get('Content-Type'));
+    .delete(authController.isAuthenticated, function(req, res) {
+        // should be auth
+        // .delete(authController.isAuthenticated, function(req, res) {
+        console.log(req.body);
+
+        let id = req.body.id;
+        Movie.findOne({ title: id }).select('_id title year genre cast').exec(function(err, movie) {
+            if (err) {
+                if (err.kind === "ObjectId") {
+                    res.status(404).json({
+                        success: false,
+                        message: `No movie with id: ${id} in the database!`
+                    }).send();
+                } else {
+                    res.send(err);
+                }
+            } else if (movie) {
+                Movie.remove({_id: movie._id}, function(err, movie) {
+                    if (err) {
+                        if (err.kind === "ObjectId") {
+                            res.status(404).json({
+                                success: false,
+                                message: `No movie with id: ${id} in the database!`
+                            }).send();
+                        } else {
+                            res.send(err);
+                        }
+                    } else {
+                        res.status(200).json({
+                            success: true,
+                            message: 'Successfully deleted'
+                        })
+                    }
+                });
+            }
+        })
     }
-    var req_obj = getJSONObjectForMovieRequirement(req);
-    res.json({success: true, msg: 'delete movies', headers: req_obj.headers, query: req.query, host: req_obj.key});
-}
-)
-*/
+    )
 ;
 
 app.use('/', router);
