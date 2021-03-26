@@ -226,14 +226,7 @@ router.route('/reviews')
         Movie.findOne({ title: id }).select('title').exec(function(err, movie) {
             // Movie.findById(id, function(err, movie) {
             if (err) {
-                if (err.kind === "ObjectId") {
-                    res.status(404).json({
-                        success: false,
-                        message: `No movie with id: ${id} in the database!`
-                    }).send();
-                } else {
-                    res.send(err);
-                }
+                res.send(err);
             } else if (movie) {
                 new_rev.save(function(err){
                     if (err) {
