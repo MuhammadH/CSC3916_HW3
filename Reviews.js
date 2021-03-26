@@ -9,7 +9,7 @@ try {
     mongoose.connect( process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
         console.log("connected-reviews"));
 }catch (error) {
-    console.log("could not connect");
+    console.log("could not connect reviews");
 }
 mongoose.set('useCreateIndex', true);
 

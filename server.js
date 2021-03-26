@@ -221,7 +221,7 @@ router.route('/reviews')
         new_rev.movie = req.body.movie;
         new_rev.review = req.body.review;
 
-        new_movie.save(function(err){
+        new_rev.save(function(err){
             if (err) {
                 if (err.code == 11000)
                     return res.json({ success: false, message: 'review failed to save.'});
