@@ -13,6 +13,7 @@ var jwt = require('jsonwebtoken');
 var cors = require('cors');
 var User = require('./Users');
 var Movie = require('./Movies');
+var Review = require('./Movies');
 
 var app = express();
 app.use(cors());
@@ -202,6 +203,73 @@ router.route('/movies')
     }
     )
 ;
+
+
+
+
+router.route('/reviews')
+    .post(function(req, res) {
+        if (!req.body.reviewer_name || !req.body.rating || !req.body.movie || !req.body.review) {
+            res.json({success: false, msg: 'Please include all data.'});
+            return;
+        }
+
+        var new_rev = new Review();
+
+        new_rev.title = req.body.title;
+        new_rev.year = req.body.year;
+        new_rev.genre = req.body.genre;
+        new_rev.cast = req.body.cast;
+
+        new_movie.save(function(err){
+            if (err) {
+                if (err.code == 11000)
+                    return res.json({ success: false, message: 'review failed to save.'});
+                else
+                    return res.json(err);
+            }
+
+            res.json({success: true, msg: 'Successfully created new review.'})
+        });
+
+        }
+    )
+    .get(function(req, res) {
+
+        // check if movie exists
+        let id = req.body.id;
+        Movie.findOne({ title: id }).select('title').exec(function(err, movie) {
+            // Movie.findById(id, function(err, movie) {
+            if (err) {
+                if (err.kind === "ObjectId") {
+                    res.status(404).json({
+                        success: false,
+                        message: `No movie with id: ${id} in the database!`
+                    }).send();
+                } else {
+                    res.send(err);
+                }
+            } else if (movie) {
+                Review.findOne({ movie: id }).select('reviewer_name rating movie review').exec(function(err, review) {
+                    if(err) {
+                        res.send(err);
+                    } else {
+                        //var review_json = JSON.stringify(review);
+                        res.json({status: 200, success: true, size: 1, reviews: review});
+                    }
+                });
+            }
+        })
+
+
+
+        }
+    )
+;
+
+
+
+
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
