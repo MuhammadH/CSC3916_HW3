@@ -223,10 +223,10 @@ router.route('/reviews')
 
         let id = req.body.movie;
 
-        Movie.findOne({ title: id }).select('title').exec(function(err, movie) {
+        Movie.findOne({ title: id }).select('title year genre cast').exec(function(err, movie) {
             // Movie.findById(id, function(err, movie) {
             if (err) {
-                res.send(err);
+                
             } else if (movie) {
                 new_rev.save(function(err){
                     if (err) {
