@@ -117,9 +117,9 @@ router.route('/movies')
             console.log(req.body);
             // set status code
 
-            var id = " ";
+            let id = " ";
             if (req.body.movie) {
-                let id = req.body.movie;
+                id = req.body.movie;
             }
 
             if (!req.body.movie) {
