@@ -216,10 +216,10 @@ router.route('/reviews')
 
         var new_rev = new Review();
 
-        new_rev.title = req.body.title;
-        new_rev.year = req.body.year;
-        new_rev.genre = req.body.genre;
-        new_rev.cast = req.body.cast;
+        new_rev.reviewer_name = req.body.reviewer_name;
+        new_rev.rating = req.body.rating;
+        new_rev.movie = req.body.movie;
+        new_rev.review = req.body.review;
 
         new_movie.save(function(err){
             if (err) {
