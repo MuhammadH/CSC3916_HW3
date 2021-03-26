@@ -221,16 +221,32 @@ router.route('/reviews')
         new_rev.movie = req.body.movie;
         new_rev.review = req.body.review;
 
-        new_rev.save(function(err){
-            if (err) {
-                if (err.code == 11000)
-                    return res.json({ success: false, message: 'review failed to save.'});
-                else
-                    return res.json(err);
-            }
+        let id = req.body.movie;
 
-            res.json({success: true, msg: 'Successfully created new review.'})
-        });
+        Movie.findOne({ title: id }).select('title').exec(function(err, movie) {
+            // Movie.findById(id, function(err, movie) {
+            if (err) {
+                if (err.kind === "ObjectId") {
+                    res.status(404).json({
+                        success: false,
+                        message: `No movie with id: ${id} in the database!`
+                    }).send();
+                } else {
+                    res.send(err);
+                }
+            } else if (movie) {
+                new_rev.save(function(err){
+                    if (err) {
+                        if (err.code == 11000)
+                            return res.json({ success: false, message: 'review failed to save.'});
+                        else
+                            return res.json(err);
+                    }
+
+                    res.json({success: true, msg: 'Successfully created new review.'})
+                });
+            }
+        })
 
         }
     )
