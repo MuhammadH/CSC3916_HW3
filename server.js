@@ -116,10 +116,31 @@ router.route('/movies')
     .get(function(req, res) {
             console.log(req.body);
             // set status code
-            Movie.find(function (err, movies) {
-                if (err) res.send(err);
-                res.json({status:200, success: true, size: movies.length, movies: movies});
-            });
+
+            var id = " ";
+            if (req.body.movie) {
+                let id = req.body.movie;
+            }
+
+            if (!req.body.movie) {
+                Movie.find(function (err, movies) {
+                    if (err) res.send(err);
+                    res.json({status:200, success: true, size: movies.length, movies: movies});
+                });
+            } else if (req.body.movie && !req.body.reviews) {
+                Movie.findOne({ title: id }).select('title year genre cast').exec(function(err, movie) {
+                    // Movie.findById(id, function(err, movie) {
+                    if (movie) {
+                        return res.json({ success: true, movies: movie});
+                    } else {
+                        return res.json({ success: false, message: 'movie not in database.'});
+                    }
+                })
+            } else if (req.body.movie && req.body.reviews == false) {
+
+            } else if (req.body.movie && req.body.reviews == true) {
+
+            }
     }
     )
     .put(function(req, res) {
