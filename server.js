@@ -244,22 +244,26 @@ router.route('/reviews')
         }
     )
     .get(function(req, res) {
+        if (!req.body.id) {
+            res.json({success: false, msg: 'Please include all data.'});
+            return;
+        }
 
         // check if movie exists
         let id = req.body.id;
-        Movie.findOne({ title: id }).select('title').exec(function(err, movie) {
+        Movie.findOne({ title: id }).select('title year genre cast').exec(function(err, movie) {
             // Movie.findById(id, function(err, movie) {
             if (movie) {
                 Review.findOne({ movie: id }).select('reviewer_name rating movie review').exec(function(err, review) {
                     if(review) {
                         //var review_json = JSON.stringify(review);
-                        res.json({status: 200, success: true, size: 1, reviews: review});
+                        res.json({status: 200, success: true, reviews: review});
                     } else {
 
                     }
                 });
-            } else if (!movie) {
-                
+            } else {
+                return res.json({ success: false, message: 'movie does not exist.'});
             }
         })
 
