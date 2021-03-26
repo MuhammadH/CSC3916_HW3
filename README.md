@@ -1,5 +1,5 @@
 # CSC3916_HW3
-Web API hw 3.
+Web API hw 3. And hw 4.
 
 Link for hw5 app:
 https://csci3916-hw-5.herokuapp.com/#/signin
