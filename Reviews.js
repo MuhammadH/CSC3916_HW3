@@ -4,7 +4,6 @@ var bcrypt = require('bcrypt-nodejs');
 
 mongoose.Promise = global.Promise;
 
-//mongoose.connect(process.env.DB, { useNewUrlParser: true });
 try {
     mongoose.connect( process.env.DB, {useNewUrlParser: true, useUnifiedTopology: true}, () =>
         console.log("connected-reviews"));
@@ -19,6 +18,10 @@ var ReviewSchema = new Schema({
     rating: { type: String, required: true},
     movie: { type: String, required: true},
     review: { type: String, required: true}
+});
+
+ReviewSchema.pre('save', function(next) {
+    next();
 });
 
 //return the model to server
