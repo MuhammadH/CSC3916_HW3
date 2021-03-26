@@ -249,24 +249,17 @@ router.route('/reviews')
         let id = req.body.id;
         Movie.findOne({ title: id }).select('title').exec(function(err, movie) {
             // Movie.findById(id, function(err, movie) {
-            if (err) {
-                if (err.kind === "ObjectId") {
-                    res.status(404).json({
-                        success: false,
-                        message: `No movie with id: ${id} in the database!`
-                    }).send();
-                } else {
-                    res.send(err);
-                }
-            } else if (movie) {
+            if (movie) {
                 Review.findOne({ movie: id }).select('reviewer_name rating movie review').exec(function(err, review) {
-                    if(err) {
-                        res.send(err);
-                    } else {
+                    if(review) {
                         //var review_json = JSON.stringify(review);
                         res.json({status: 200, success: true, size: 1, reviews: review});
+                    } else {
+
                     }
                 });
+            } else if (!movie) {
+                
             }
         })
 
