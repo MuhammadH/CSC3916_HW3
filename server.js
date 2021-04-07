@@ -121,6 +121,27 @@ router.route('/movies')
             if (req.body.movie) {
                 id = req.body.movie;
             }
+            if (req.headers.movie) {
+                id = req.headers.movie;
+            }
+
+            if (req.headers.movie) {
+                Movie.findOne({ title: id }).select('title year genre cast').exec(function(err, movie) {
+                    // Movie.findById(id, function(err, movie) {
+                    if (movie) {
+                        Review.findOne({ movie: id }).select('reviewer_name rating movie review').exec(function(err, review) {
+                            if(review) {
+                                //var review_json = JSON.stringify(review);
+                                res.json({status: 200, success: true, movies: movie, reviews: review});
+                            } else {
+                                return res.json({ success: true, movies: movie});
+                            }
+                        });
+                    } else {
+                        return res.json({ success: false, message: 'movie not in database.'});
+                    }
+                })
+            }
 
             if (!req.body) {
                 Movie.find(function (err, movies) {
