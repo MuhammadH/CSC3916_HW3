@@ -125,13 +125,13 @@ router.route('/movies')
             if (!req.body) {
                 Movie.find(function (err, movies) {
                     if (err) res.send(err);
-                    res.json({status:200, success: true, size: movies.length, movies: movies});
+                    return res.json({status:200, success: true, size: movies.length, movies: movies});
                 });
             }
             else if (!req.body.movie) {
                 Movie.find(function (err, movies) {
                     if (err) res.send(err);
-                    res.json({status:200, success: true, size: movies.length, movies: movies});
+                    return res.json({status:200, success: true, size: movies.length, movies: movies});
                 });
             } else if (req.body.movie && !req.body.reviews) {
                 Movie.findOne({ title: id }).select('title year genre cast').exec(function(err, movie) {
