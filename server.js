@@ -122,7 +122,13 @@ router.route('/movies')
                 id = req.body.movie;
             }
 
-            if (!req.body.movie) {
+            if (!req.body) {
+                Movie.find(function (err, movies) {
+                    if (err) res.send(err);
+                    res.json({status:200, success: true, size: movies.length, movies: movies});
+                });
+            }
+            else if (!req.body.movie) {
                 Movie.find(function (err, movies) {
                     if (err) res.send(err);
                     res.json({status:200, success: true, size: movies.length, movies: movies});
