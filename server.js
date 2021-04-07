@@ -142,8 +142,7 @@ router.route('/movies')
                     }
                 })
             }
-
-            if (!req.body) {
+            else if (!req.body) {
                 Movie.find(function (err, movies) {
                     if (err) res.send(err);
                     return res.json({status:200, success: true, size: movies.length, movies: movies});
