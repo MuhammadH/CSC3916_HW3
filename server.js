@@ -88,6 +88,38 @@ router.post('/signin', function (req, res) {
     })
 });
 
+
+
+
+
+router.post('/frontend', function (req, res) {
+    var new_purchase = new Purchase();
+
+    new_purchase.name = req.body.name;
+    new_purchase.address = req.body.address;
+    new_purchase.cc = req.body.cc;
+    new_purchase.product_id = req.body.product_id;
+    new_purchase.order_number = req.body.order_number;
+    new_purchase.euro_price = req.body.euro_price;
+    new_purchase.region_currency = req.body.region_currency;
+    new_purchase.region_price = req.body.region_price;
+
+    new_purchase.save(function(err){
+        if (err) {
+            if (err.code == 11000)
+                return res.json({ success: false, message: 'review failed to save.'});
+            else
+                return res.json(err);
+        }
+    });
+    return res.json({success: true, msg: 'Successfully saved purchase.'});
+});
+
+
+
+
+
+
 router.route('/movies')
     .post(function(req, res) {
         if (!req.body.title || !req.body.year || !req.body.genre || !req.body.cast) {
@@ -338,32 +370,6 @@ router.route('/reviews')
 
 
 
-        }
-    )
-;
-
-router.route('/front')
-    .post(function(req, res) {
-
-        var new_purchase = new Purchase();
-
-        new_purchase.name = req.body.name;
-        new_purchase.address = req.body.address;
-        new_purchase.cc = req.body.cc;
-        new_purchase.product_id = req.body.product_id;
-        new_purchase.order_number = req.body.order_number;
-        new_purchase.euro_price = req.body.euro_price;
-        new_purchase.region_currency = req.body.region_currency;
-        new_purchase.region_price = req.body.region_price;
-
-        new_purchase.save(function(err){
-            if (err) {
-                if (err.code == 11000)
-                    return res.json({ success: false, message: 'review failed to save.'});
-                else
-                    return res.json(err);
-            }
-            return res.json({success: true, msg: 'Successfully saved purchase.'})
         }
     )
 ;
